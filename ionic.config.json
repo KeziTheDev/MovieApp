@@ -1,0 +1,7 @@
+{
+  "name": "ReactMovieListApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
