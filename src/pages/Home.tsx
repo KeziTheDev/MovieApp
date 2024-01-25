@@ -1,3 +1,5 @@
+// Import knihoven a komponent pro domovskou stránku
+
 import { 
   IonAvatar,
   IonContent, 
@@ -21,25 +23,38 @@ import { useEffect, useState } from 'react';
 import { gameControllerOutline, tvOutline, videocamOutline } from 'ionicons/icons'
 
 const Home: React.FC = () => {
+  // Import hooku pro komunikaci s API
   const { searchData } = useApi()
 
+  // Stavy pro uchování hledaného termínu, typu vyhledávání a výsledků
   const [searchTerm, setSearchTerm] = useState('');
   const [type, setType] = useState<SearchType>(SearchType.all);
   const [results, setResults] = useState<SearchResult[]>([]);
+
+  // Hooky pro vytváření alertu a loading indikátoru
   const [presentAlert] = useIonAlert()
   const [loading, dismiss] = useIonLoading()
 
+  // Efekt pro vyhledávání dat při změně termínu nebo typu vyhledávání
   useEffect(() => {
+    // Kontrola prázdného termínu
     if(searchTerm === '') {
       setResults([])
       return
     }
 
+    // Funkce pro načítání dat
     const loadData = async() =>{
+      // Zobrazení loading indikátoru
       await loading()
+
+      // Volání API pro vyhledání dat
       const result: any = await searchData(searchTerm, type)
       console.log('🚀 ~ file: Home.tsx:31 ~ LoadData ~ result',result)
+
+      // Skrytí loading indikátoru
       await dismiss()
+      // Zpracování výsledků
       if(result?.Error){
         presentAlert(result.Error)
       }
@@ -47,9 +62,11 @@ const Home: React.FC = () => {
         setResults(result.Search)
       }
     }
+    // Zavolání funkce pro načítání dat
     loadData();
   },[searchTerm, type]);
 
+  // Renderování komponenty domovské stránky
   return (
     <IonPage>
       <IonHeader>

@@ -25,15 +25,19 @@ import { RouteComponentProps } from 'react-router'
 import useApi, { DetailsResult } from '../hooks/useApi';
 import { bodyOutline, clipboardOutline, starHalfOutline, trophyOutline } from 'ionicons/icons';
 
+// Rozhraní pro props komponenty Details
 interface DetailsPageProps
     extends RouteComponentProps<{
         id:string;
     }>{}
 
+// Komponenta Details pro zobrazení detailů o filmu/seriálu
 const Details: React.FC<DetailsPageProps> = ({ match }) =>{
+    // Import hooku pro komunikaci s API a definice stavu pro informace o filmu/seriálu
     const { getDetails } = useApi()
     const [information, setInformation] = useState<DetailsResult | null>(null);
 
+    // Efekt pro získání detailů před zobrazením komponenty
     useIonViewWillEnter(() => {
         const fetchData = async () => {
           const id = match.params.id
@@ -43,11 +47,11 @@ const Details: React.FC<DetailsPageProps> = ({ match }) =>{
         }    
         fetchData()
 
-        // Return a cleanup function if needed, or just undefined
         return () => {
         }
       })
-
+      
+    // Renderování komponenty s informacemi o filmu/seriálu
     return(
         <IonPage>
             <IonHeader>
